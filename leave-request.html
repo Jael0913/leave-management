@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="HTML Tidy for HTML5 for Windows version 5.2.0" name="generator">
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta content="iNTEGRiTY | PLM Human Resources Information System" name="description">
+    <meta content="MiSAKACHi" name="author">
+    <title>Leave Management System</title>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+    <link th:href="@{/styles/css/app/img/plm_seal_2014_optipng.png}" rel="icon" type="image/png">
+    <link th:href="@{/styles/css/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/styles/css/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css}" rel="stylesheet">
+    <link th:href="@{/styles/css/select2/4.0.3/css/select2.min.css}" rel="stylesheet">
+    <link th:href="@{/styles/css/adminlte/2.3.8/css/AdminLTE.min.css}" rel="stylesheet">
+    <link th:href="@{/styles/css/adminlte/2.3.8/css/skins/skin-purple.min.css}" rel="stylesheet">
+
+    <link th:href="@{/styles/css/app/css/iNTEGRiTY-Global.css}" rel="stylesheet">
+
+</head>
+<body class="hold-transition skin-purple sidebar-mini">
+<div class="wrapper">
+    <header class="main-header">
+        <a class="logo" href="main.html" target="_self"> <span class="logo-mini"><b>i</b>TG</span> <span
+                class="logo-lg"><b>i</b>NTEGRiTY</span></a>
+        <nav class="navbar navbar-static-top">
+            <a class="sidebar-toggle" data-toggle="offcanvas" href="#" role="button"><span class="sr-only">Toggle navigation</span></a>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown user user-menu"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> <img
+                            alt="User Image" class="user-image"
+                            th:src="@{/styles/css/app/img/plm_seal_2014_optipng.png}"> <span class="hidden-xs">Justine Louis Magpantay</span></a>
+                        <ul class="dropdown-menu">
+                            <li class="user-header">
+                                <img alt="User Image" class="img-circle"
+                                     th:src="@{/styles/css/app/img/plm_seal_2014_optipng.png}">
+                                <p>Justine Louis Magpantay</small></p>
+                            </li>
+                            <li class="user-footer">
+                                <div class="pull-right">
+                                    <a class="btn btn-default btn-flat" href="auth/logout">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <aside class="main-sidebar">
+        <section class="sidebar" role="navigation">
+            <h2 class="sr-only">SIDEBAR NAVIGATION</h2>
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img alt="User Image" class="img-circle" th:src="@{/styles/css/app/img/plm_seal_2014_optipng.png}">
+                </div>
+                <div class="pull-left info">
+                    <p>Justine Louis Magpantay</p>
+                    <small class="text-sm"><i class="fa fa-star text-success"></i> Administrator</small>
+                </div>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="header">NAVIGATION</li>
+                <li class="@yield( 'dashboardMenu' )">
+                    <a href="main.html" target="_self"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+                </li>
+                <li class="header">SELF SERVICE</li>
+                <li class="treeview @yield( 'myInformationMenu' )">
+                    <a href="#"><i class="fa fa-user text-red"></i> <span class="text-red">My Information</span> <span
+                            class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                </li>
+                <li class="treeview @yield( 'myLeavesMenu' )">
+                    <a href="#"><i class="fa fa-calendar-check-o"></i>My Leaves</span> <span
+                            class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                    <ul class="treeview-menu">
+                        <li class="@yield( 'myNewLeaveRequest' )">
+                            <a href="leaves/new"><i class="fa fa-circle-o"></i> New Leave Request</a>
+                        </li>
+                        <li class="@yield( 'myApprovedRequests' )">
+                            <a href="leaves/pending"><i class="fa fa-circle-o"></i> Approved Requests</a>
+                        </li>
+                        <li class="@yield( 'myCancelledRequests' )">
+                            <a href="leaves/approved"><i class="fa fa-circle-o"></i> Cancelled Requests</a>
+                        </li>
+                        <li class="@yield( 'myPendingRequests' )">
+                            <a href="leaves/cancelled"><i class="fa fa-circle-o"></i> Pending Requests</a>
+                        </li>
+                        <li class="@yield( 'myRejectedRequests' )">
+                            <a href="leaves/rejected"><i class="fa fa-circle-o"></i> Rejected Requests</a>
+                        </li>
+                        <li class="@yield( 'mySubordinateRequests' )">
+                            <a href="leaves/subordinate"><i class="fa fa-circle-o"></i> Subordinate Requests</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="treeview @yield( 'myAttendanceMenu' )">
+                    <a href="#"><i class="fa fa-book text-red"></i> <span class="text-red">My Attendance</span> <span
+                            class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                </li>
+                <li class="header">HRIS MODULES</li>
+                <!-- @can( 'accessPersonnelManagement', session( 'activeUser' ) ) -->
+                <li class="treeview @yield( 'personnelManagementMenu' )">
+                    <a href="#"><i class="fa fa-users "></i> <span>Personnel Management</span> <span
+                            class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                    <ul class="treeview-menu">
+                        <!-- @can( 'addNewPersonnel', session( 'activeUser' ) ) -->
+                        <li class="@yield( 'pmAddNewPersonnel' )">
+                            <a href="personnel/add"><i class="fa fa-circle-o"></i> Add New Employee</a>
+                        </li>
+                        <!-- @endcan -->
+                        <!-- @can( 'viewPersonnelList', session( 'activeUser' ) ) -->
+                        <li class="@yield( 'pmViewPersonnelList' )">
+                            <a href="personnel/list"><i class="fa fa-circle-o"></i> View Employee List</a>
+                        </li>
+                        <!-- @endcan -->
+                    </ul>
+                </li>
+                <!-- @endcan -->
+                <li class="treeview @yield( 'myLeavesMenu' )">
+                    <a href="#"><i class="fa fa-calendar-check-o"></i>Leaves</span> <span
+                            class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                    <ul class="treeview-menu">
+                        <li class="LeaveReq">
+                            <a th:href="@{leave-request}" target="_self"><i class="fa fa-circle-o"></i>New Leave Request</a>
+                        </li>
+                        <li class="EmpList">
+                            <a th:href="@{employees-list}" target="_self"><i class="fa fa-circle-o"></i>Employee Leave
+                                List</a>
+                        </li>
+                        <li class="LeaveComputer">
+                            <a th:href="@{leave-credits-computation}" target="_self"><i class="fa fa-circle-o"></i>Leave
+                                Credits
+                                Computer</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="treeview @yield( 'talentAcquisitionMenu' )">
+                    <a href="#"><i class="fa fa-user-plus text-red"></i> <span
+                            class="text-red">Talent Acquisition</span> <span class="pull-right-container"><i
+                            class="fa fa-angle-left pull-right"></i></span></a>
+                </li>
+                <!-- @can( 'accessTimeKeeping', session( 'activeUser' ) ) -->
+                <li class="treeview @yield( 'timeKeepingMenu' )">
+                    <a href="#"><i class="fa fa-clock-o"></i> <span>Time Keeping</span> <span
+                            class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                    <ul class="treeview-menu">
+                        <li class="@yield( 'tkComputeDtr' )">
+                            <a href="https://dtr.icto.local/"> <!----><i class="fa fa-circle-o"></i> Compute Daily Time
+                                Record</a>
+                        </li>
+                        <li class="@yield( 'tkPrintDtr' )">
+                            <a href="timekeeping/dtr/print"><!----><i class="fa fa-circle-o"></i> Print Daily Time
+                                Record</a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- @endcan -->
+                <li class="treeview @yield( 'payrollGenerationMenu' )">
+                    <a href="#"><i class="fa fa-money text-red"></i> <span class="text-red">Payroll Generation</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                </li>
+                <li class="header">UTILITIES</li>
+                <li class="treeview @yield( 'configurationMenu' )">
+                    <a href="#"><i class="fa fa-wrench"></i> <span>Configuration</span> <span
+                            class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                    <ul class="treeview-menu">
+                        <li class="@yield( 'cfgDepartments' )">
+                            <a href="configuration/departments"><i class="fa fa-circle-o"></i> Departments</a>
+                        </li>
+                        <li class="@yield( 'cfgDesignationTitles' )">
+                            <a href="configuration/designationtitles"><i class="fa fa-circle-o"></i> Designation Titles</a>
+                        </li>
+                        <li class="@yield( 'cfgPlantillaItems' )">
+                            <a href="configuration/plantilla"><i class="fa fa-circle-o"></i> Plantilla Items</a>
+                        </li>
+                        <li class="@yield( 'cfgPositions' )">
+                            <a href="configuration/positions"><i class="fa fa-circle-o"></i> Positions</a>
+                        </li>
+                        <li class="@yield( 'cfgTenure' )">
+                            <a href="configuration/tenure"><i class="fa fa-circle-o"></i> Tenure</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="treeview @yield( 'reportsGenerationMenu' )">
+                    <a href="#"><i class="fa fa-file text-red"></i> <span class="text-red">Reports Generation</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                </li>
+            </ul>
+        </section>
+    </aside>
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                New Leave Request
+            </h1>
+        </section>
+        <section class="content" role="main">
+            <h2 class="sr-only">PAGE CONTENT</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-purple flat">
+                        <div class="box-body">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">
+                                    <i class="fa fa-file-text-o"></i> Enter Details
+                                </h3>
+                            </div>
+
+                            <div class="modal-dialog" style="width: 100%">
+                                <div th:if="${errorMessage != null}" class="alert alert-danger" role="alert">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    <span class="sr-only">Error:</span>
+                                    [[${errorMessage}]]<button type="button" class="close" data-dismiss="alert"><span>x</span></button>
+                                </div>
+                            </div>
+
+                            <div class="modal-dialog" style="width: 100%">
+                                <div th:if="${error != null}" class="alert alert-danger" role="alert">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    <span class="sr-only">Error:</span>
+                                    [[${error}]]<button type="button" class="close" data-dismiss="alert"><span>x</span></button>
+                                </div>
+                            </div>
+
+                            <div class="modal-dialog" style="width: 100%">
+                                <div th:if="${successMessage}" class="alert alert-info" role="alert">
+                                    [[${successMessage}]]<button type="button" class="close" data-dismiss="alert"><span>x</span></button>
+                                </div>
+                            </div>
+
+                            <form class="mb-4 w-100" th:action="@{/leaves/leave-request}"
+                                  th:object="${leaveRequest}" method="GET">
+
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <input th:field="*{firstName}" class="form-control"
+                                               placeholder="EMPLOYEE FIRST NAME"
+                                               type="text">
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <input th:field="*{middleName}" class="form-control"
+                                               placeholder="EMPLOYEE MIDDLE NAME"
+                                               type="text">
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <input th:field="*{lastName}" class="form-control"
+                                               placeholder="EMPLOYEE LAST NAME"
+                                               type="text">
+                                    </div>
+
+                                    <div class="col-xs-3">
+                                        <button class="btn btn-warning btn-flat action-button" type="submit"><i
+                                                class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <hr>
+                                    <h5>OR:</h5>
+                                    <hr>
+                                </div>
+                            </div>
+                            <form th:action="@{/leaves/leave-request}"
+                                  th:object="${emailOrEmployeeNumber}" method="GET">
+
+                                <div class="row">
+                                    <div class="col-xs-7">
+                                        <input th:field="*{emailOrEmployeeNumber}" class="form-control"
+                                               placeholder="PLM EMAIL OR EMPLOYEE NUMBER" type="text"><br>
+                                    </div>
+                                    <div class="col-xs-1">
+                                        <button class="btn btn-warning btn-flat action-button" type="submit"><i
+                                                class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+
+
+                            <form th:if="${employeeDetails}" action="#" th:action="@{/leaves/leave-request}"
+                                  th:object="${leaveRequest}"
+                                  method="POST">
+
+                                <div class="row>">
+                                    <div class="col-xs-8">
+                                        <h5>TYPE OF LEAVE:</h5>
+                                        <select class="form-control" th:field="*{leaveType}">
+                                            <option th:each="leaveType : ${leaveTypes}" th:value="${leaveType.key}"
+                                                    th:text="${leaveType.value}"></option>
+                                        </select>
+
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <br>FROM: <input class="form-control" type="date">
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <br>TO: <input class="form-control" type="date">
+                                            </div>
+                                        </div>
+
+                                        <br><input class="form-control" th:field="*{daysRequested}"
+                                            placeholder="NUMBER OF DAYS REQUESTED" type="text">
+
+                                        <br><input class="form-control"placeholder="NUMBER OF DAYS ON LEAVE WITHOUT PAY" 
+                                                    type="text">
+
+                                        <br><br>
+                                        <a class="btn btn-warning" onclick="" id="submitButton">
+                                            SUBMIT
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body bg-warning">
+                                                <i class="fa fa-user"> Employee Number: [[${employeeDetails.getEmployeeNumber()}]]</i>
+                                                <hr>
+                                                <i class="fa fa-user"> Employee Name: [[${completeDetails.getDisplayName()}]]</i>
+                                                <hr>
+                                                <i class="fa fa-at"> PLM Email: [[${employeeDetails.getOfficialEmail()}]]</i>
+                                                <hr>
+                                                <i class="fa fa-calendar"> Vacation Leave: [[${employeeDetails.getVacation_leave_total}]]</i>
+                                                <hr>
+                                                <i class="fa fa-calendar"> Sick Leave: [[${employeeDetails.getSick_leave_total}]]</i>
+                                                <hr>
+                                                <i class="fa fa-calendar"> Forced Leave: [[${employeeDetails.getRemaining_forced_leave_for_year}]]</i>
+                                                <hr>
+                                                <i class="fa fa-calendar-minus-o"> Number of Days on Leave Without Pay: [[${employeeDetails.getNo_of_days_on_leave_without_pay}]]</i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Confirmation Modal Start -->
+                                <div class="modal fade" data-backdrop="static" data-keyboard="false"
+                                     id="confirmationModal" role="dialog">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-purple">
+                                                <h5 class="modal-title">
+                                                    <i class="fa fa-info-circle"></i> Confirmation
+                                                </h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h4>This will initialize leave request, do you wish to
+                                                    continue?</h4>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-success flat" id="cfnModalYesBtn"
+                                                        type="submit"><i class="fa fa-check"></i> Yes
+                                                </button>
+                                                <button class="btn btn-default flat" id="cfnModalNoBtn"
+                                                        type="button"><i class="fa fa-times"></i> No
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    </section>
+    <footer class="main-footer">
+        <strong>Pamantasan ng Lungsod ng Maynila</strong>
+        <div class="pull-right hidden-xs">
+            Information & Communications Technology Office
+        </div>
+    </footer>
+</div>
+
+
+<script th:src="@{/styles/css/jquery/3.1.1/js/jquery.min.js}"></script>
+<script defer th:src="@{/styles/css/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+<script th:src="@{/styles/css/datatables/1.10.13/js/jquery.dataTables.min.js}"></script>
+<script defer th:src="@{/styles/css/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js}"></script>
+<script defer th:src="@{/styles/css/select2/4.0.3/js/select2.min.js}"></script>
+<script th:inline="javascript">
+    /* Global Variables Section */
+    let departmentsTable = $('#departmentsTable'),
+        tableAddNewButton = $('#tableAddNewButton'),
+        confirmationModal = $('#confirmationModal'),
+        cfnModalYesBtn = $('#cfnModalYesBtn'),
+        cfnModalNoBtn = $('#cfnModalNoBtn'),
+        documentModal = $('.modal'),
+        emCloseButton = $('#errorModalCloseBtn'),
+        emRefreshButton = $('#errorModalRefreshBtn'),
+        eMessageCallout = $('#errorMessageCallout'),
+        errorModal = $('#errorModal'),
+        formContainer = $('#formContainer'),
+        formData = null,
+        inputModal = $('#inputModal'),
+        recordIdField = $('#recordId'),
+        resetButton = $('#resetButton'),
+        departmentsForm = $('#departmentsForm'),
+        submitButton = $('#submitButton'),
+        vErrorCallout = $('#validationErrorCallout'),
+        departmentHead = $('#departmentHead'),
+        departmentType = $('#departmentType'),
+        isActive = $('#isActive');
+
+    /* Page Specific Scripts */
+    $(document).ready(function () {
+
+        submitButton.click(function () {
+            confirmationModal.modal('show');
+        });
+
+        cfnModalNoBtn.click(function () {
+            confirmationModal.modal('hide');
+        });
+    });
+
+
+    /* AJAX Engine Section - Handles the form submission */
+    function disableControls(flag) {
+        formContainer.find('input').prop('disabled', flag);
+        formContainer.find('select').prop('disabled', flag);
+        formContainer.find('button').prop('disabled', flag);
+        submitButton.find('i').toggleClass('fa-save', !flag).toggleClass('fa-spinner fa-spin', flag);
+    }
+
+    function resetErrorMessages() {
+        vErrorCallout.addClass('hidden');
+        eMessageCallout.addClass('hidden');
+        formContainer.find('div[id$=Container]').removeClass('has-error');
+        formContainer.find('div[id$=ErrorMsg] > small').html('');
+        formContainer.find('div[id$=ErrorMsg]').addClass('hidden');
+    }
+
+    function resetForm() {
+        resetErrorMessages();
+        departmentsForm.trigger('reset');
+        departmentsForm.find('select').trigger('change');
+    }
+
+    // AJAX Engine Template [Revision 0002] - Modal Form Submission
+    function savePersonnelInfo() {
+        // Serialize the form
+        formData = departmentsForm.serialize();
+
+        // Disable Form Controls
+        disableControls(true);
+
+        // Initiate a POST AJAX request
+        $.ajax({
+            async: true,
+            cache: true,
+            data: formData,
+            dataType: 'json',
+            encode: true,
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            type: 'post',
+            url: ''
+        }).done(function (data, status, xhr) {
+            try {
+                let jsonData = JSON.parse(xhr.responseText);
+
+                // Reload page to reflect changes
+                if (jsonData.ajaxSuccess === true) {
+                    location.reload(true);
+                } else if (typeof (jsonData.ajaxFailure) === 'string') {
+                    showErrorMessageCallout(jsonData.ajaxFailure);
+                } else {
+                    showErrorMessageCallout('Request completed but an incorrect response was received.');
+                }
+            } catch (errorException) {
+                showErrorMessageCallout('Request succeeded but an unspecified error occurred.');
+            }
+        }).fail(function (xhr, status, error) {
+            try {
+                let jsonData = JSON.parse(xhr.responseText),
+                    jsonKeys = Object.keys(jsonData);
+
+                if (jsonData.ajaxFailure === undefined) {
+                    // Enable Form Controls
+                    disableControls(false);
+
+                    // Reset error messages
+                    resetErrorMessages();
+
+                    // Show error banner
+                    vErrorCallout.removeClass('hidden');
+
+                    // Iterate through elements and highlight fields with error
+                    jsonKeys.forEach(function (keyName) {
+                        $('#' + keyName + 'Container').addClass('has-error');
+                        $('#' + keyName + 'ErrorMsg > small').html(jsonData[keyName]);
+                        $('#' + keyName + 'ErrorMsg').removeClass('hidden');
+                    });
+                } else if (typeof (jsonData.ajaxFailure) === 'string') {
+                    showErrorMessageCallout(jsonData.ajaxFailure);
+                } else {
+                    showErrorMessageCallout('Request failed. Server sent an unknown response.');
+                }
+            } catch (errorException) {
+                showErrorMessageCallout('Request failed. Unable to parse server response.');
+            }
+        });
+    }
+
+    function showErrorMessageCallout(message) {
+        resetErrorMessages();
+        eMessageCallout.find('p').html(message);
+        eMessageCallout.removeClass('hidden');
+        disableControls(false);
+    }
+
+    function showErrorModal(message) {
+        // Hide all previously shown modal windows
+        documentModal.modal('hide');
+
+        setTimeout(function () {
+            // Set the modal error message
+            errorModal.find('.modal-body').html(message);
+
+            // Register Event Listeners
+            emCloseButton.click(function () {
+                errorModal.modal('hide');
+                resetErrorMessages();
+                disableControls(false);
+            });
+
+            emRefreshButton.click(function () {
+                location.reload(true);
+            });
+
+            // Show the error modal
+            errorModal.modal('show');
+        }, 1000);
+
+        return false;
+    }
+
+    function fetchPersonnelInfo(recordId) {
+        // Initiate a POST AJAX request
+        $.ajax({
+            async: true,
+            cache: true,
+            data: {
+                'recordId': recordId
+            },
+            dataType: 'json',
+            encode: true,
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            type: 'post',
+            url: 'departments/fetch'
+        }).done(function (data, status, xhr) {
+            try {
+                let jsonData = JSON.parse(xhr.responseText),
+                    jsonKeys = Object.keys(jsonData);
+
+                // Reset previous form contents
+                resetForm();
+
+                // Indicate the ID of the record being edited
+                recordIdField.val(recordId);
+
+                // Iterate through elements & assign the values
+                jsonKeys.forEach(function (keyName) {
+                    let selector = $('#' + keyName);
+                    $(selector).val(jsonData[keyName]).trigger('change');
+                });
+
+                // Change the title
+                inputModal.find('.modal-title').find('span').html('Edit Departments');
+
+                // :)
+                inputModal.modal('show');
+            } catch (errorException) {
+                showErrorModal('Request succeeded but an unspecified error occurred.');
+            }
+        }).fail(function (xhr, status, error) {
+            try {
+                let jsonData = JSON.parse(xhr.responseText);
+
+                if (typeof (jsonData.ajaxFailure) === 'string') {
+                    showErrorModal(jsonData.ajaxFailure);
+                } else {
+                    showErrorModal('Request failed. Server sent an unknown response.');
+                }
+            } catch (errorException) {
+                showErrorModal('Request failed. Unable to parse server response.');
+            }
+        });
+    }
+
+
+</script>
+<script defer th:src="@{/styles/css/adminlte/2.3.8/js/app.min.js}"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+</body>
+</html>
