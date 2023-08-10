@@ -208,6 +208,14 @@
                                             <i class="fa fa-file-text-o"></i> Enter Details
                                         </h3>
                                     </div>
+                                    <!--                                    <form action="#" th:action="@{/leaves/employees-list/add-all-monthly-credits}"-->
+                                    <!--                                          method="POST">-->
+                                    <div class="col-xs-1">
+                                        <button class="btn btn-primary btn-flat pull-right"
+                                                data-toggle="modal"
+                                                data-target="#accumsModal">RECORD LEAVE WITHOUT PAY
+                                        </button>
+                                    </div>
 
 
                                     <!-- Modal -->
@@ -234,7 +242,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-12">
+                                    <div class="col-xs-1">
                                         <button class="btn btn-danger btn-flat pull-right"
                                                 data-toggle="modal"
                                                 data-target="#resetModal">RESET
@@ -243,6 +251,7 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <br>
 
 
                                 <div class="modal-dialog" style="width: 97.5%">
@@ -315,6 +324,8 @@
 
                             </div>
 
+                            <!--                            </div>-->
+                            <!--                            -->
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover table-striped" id="departmentsTable">
                                     <thead>
@@ -455,11 +466,10 @@
                 </h5>
             </div>
             <div class="modal-body">
-                <h4>This will provide leave complete leave earnings for employees who did not file a leave request,
-                    do
-                    you wish to continue?</h4>
+                <h4>This will record the individual employee's days on leave without pay,
+                    do you wish to continue? </h4>
             </div>
-            <form action="#" th:action="@{/leaves/employees-list/add-all-monthly-credits}" method="POST">
+            <form action="#" th:action="@{/leaves/employees-list/record-number-of-days-on-leave-without-pay}" method="POST">
                 <div class="modal-footer">
                     <button class="btn btn-success flat" type="submit"><i class="fa fa-check"></i>
                         Yes
